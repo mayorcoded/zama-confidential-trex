@@ -85,21 +85,6 @@ and key rotation.
 ## 3. Target Architecture
 ![Target-Architecture](https://github.com/user-attachments/assets/77649235-9fe9-43c0-af34-4a96dc5c04d0)
 
-```text
-                       Zama SDK
-                  encrypt / decrypt
-                           |
-                           v
-                 ConfidentialTREXToken
-                /          |           \
-               v           v            v
-       IdentityRegistry  Compliance   OversightController
-                             |
-          +------------------+------------------+
-          |                  |                  |
-     Country/Time      Transfer Limit      Max Balance
-```
-
 The target architecture of this implementation comprises 4 contracts: `ConfidentialTREXToken`, `IdentityRegistry`
 `ConfidentialModularCompliance`, and `OversightController`. Below, we briefly discuss the role of each contract and
 how it interacts with other. 
