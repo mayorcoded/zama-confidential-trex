@@ -37,7 +37,9 @@ contract ConfidentialModularCompliance is ZamaEthereumConfig, AccessControl, ICo
     }
 
     function addModule(address module) external onlyRole(COMPLIANCE_ADMIN_ROLE) {
-        if (module == address(0) || _modules.length() >= MAX_MODULES || !_modules.add(module)) revert("invalid module");
+        if (module == address(0) || _modules.length() >= MAX_MODULES || !_modules.add(module)) {
+            revert("invalid module");
+        }
         emit ModuleAdded(module);
     }
 
@@ -63,9 +65,9 @@ contract ConfidentialModularCompliance is ZamaEthereumConfig, AccessControl, ICo
         confidentialAllowed = FHE.asEbool(true);
         for (uint256 i; i < _modules.length(); ++i) {
             address module = _modules.at(i);
-            (bool modulePublic, ebool modulePrivate) = IConfidentialComplianceModule(module).moduleCheck(
-                token, from, to, fromBalance, toBalance, requestedAmount
-            );
+            IConfidentialComplianceModule complianceModule = IConfidentialComplianceModule(module);
+            (bool modulePublic, ebool modulePrivate) =
+                complianceModule.moduleCheck(token, from, to, fromBalance, toBalance, requestedAmount);
             publicAllowed = publicAllowed && modulePublic;
             confidentialAllowed = FHE.and(confidentialAllowed, modulePrivate);
         }
